@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "description": "> Some helpers for AWS",
   "author": "Matt Tyler <matt.tyler@mechanicalrock.io>",
-  "homepage": "",
-  "license": "ISC",
+  "license": "apache-2.0",
   "main": ".dist/index.cjs.js",
   "module": ".dist/index.esm.js",
   "directories": {
