@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"name": "root (lerna)",
+			"path": "."
+		},
+		{
+			"path": "packages/awsome"
+		}
+	],
+	"settings": {}
+}
