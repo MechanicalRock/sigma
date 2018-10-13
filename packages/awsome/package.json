@@ -1,0 +1,48 @@
+{
+  "name": "@mechanical-rock/awsome",
+  "version": "0.0.0",
+  "description": "> Some helpers for AWS",
+  "author": "Matt Tyler <matt.tyler@mechanicalrock.io>",
+  "homepage": "",
+  "license": "ISC",
+  "main": ".dist/index.cjs.js",
+  "module": ".dist/index.esm.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    ".dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "npm run clean && rollup -c",
+    "clean": "rimraf .js/ .dist/ .cover/",
+    "compile": "tsc",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.5",
+    "@types/lodash.clonedeep": "^4.5.4",
+    "@types/node": "^10.11.7",
+    "aws-sdk-mock": "^4.2.0",
+    "jest": "^23.6.0",
+    "lodash.clonedeep": "^4.5.0",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.66.6",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-terser": "^3.0.0",
+    "rollup-plugin-typescript2": "^0.17.1",
+    "rollup-plugin-uglify": "^6.0.0",
+    "ts-jest": "^23.10.4",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.3"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.334.0"
+  }
+}
