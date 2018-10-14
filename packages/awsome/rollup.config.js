@@ -6,6 +6,17 @@ import { terser } from 'rollup-plugin-terser';
 
 import pkg from './package.json';
 
+const input = 'lib/index.ts';
+const external = ['aws-sdk'];
+
+const plugins = [
+	typescript(),
+	commonjs(),
+	resolve(),
+	terser({ sourcemap: true }),
+	sourceMaps()
+]
+
 export default [
 	// CommonJS (for Node) and ES module (for bundlers) build.
 	// (We could have three entries in the configuration array
@@ -14,18 +25,18 @@ export default [
 	// an array for the `output` option, where we can specify 
 	// `file` and `format` for each target)
 	{
-		input: 'lib/index.ts',
-		external: ['aws-sdk'],
+		input,
+		external,
 		output: [
-			//{ file: pkg.main, format: 'cjs', sourcemap: true },
 			{ file: pkg.module, format: 'es', sourcemap: true }
-        ],
-        plugins: [
-            typescript(),
-            commonjs(),
-			resolve(),
-			terser({ sourcemap: true }),
-            sourceMaps()
-        ]
+		],
+		plugins
+	}, {
+		input,
+		external,
+		output: [
+			{ file: pkg.main, format: 'cjs', sourcemap: true },
+		],
+		plugins
 	}
 ];
