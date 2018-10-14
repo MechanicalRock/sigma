@@ -1,5 +1,4 @@
 import { Credentials, STS } from "aws-sdk";
-import clonedeep from "lodash.clonedeep"
 
 /*
 Fluent factory system for instantiating AWS services using role-credential
@@ -54,13 +53,14 @@ export class ServiceFactory<T, U> implements IWithOptions<T, U>, IWithRoleChain<
     }
 
     public async WithRoleChain(...roleRequests: STS.AssumeRoleRequest[]): Promise<T> {
+        const stsOptions = { ...this.stsOptions }
         const credentials = await roleRequests.reduce((acc: Promise<Credentials>, r: STS.AssumeRoleRequest) => {
             return acc.then((cred) => {
-                const tmpOptions = Object.assign(clonedeep(this.stsOptions), { cred });
-                return this.Assumer(tmpOptions, r);
+                stsOptions.credentials = cred 
+                return this.Assumer(stsOptions, r);
             });
         }, Promise.resolve(this.stsOptions.credentials as Credentials));
-        const serviceOptions = Object.assign(clonedeep((this.options || {}) as U), { ...credentials });
+        const serviceOptions = Object.assign({} as U, this.options || {}, { ...credentials });
         return new this.service(serviceOptions);
     }
 
