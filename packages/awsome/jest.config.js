@@ -5,5 +5,6 @@ module.exports = {
     testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     testPathIgnorePatterns: ["/lib/", "/node_modules/"],
     moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-    coverageDirectory: "./.cover"
+    coverageDirectory: "./.cover",
+    collectCoverageFrom: ["lib/**/*.{ts}", "!lib/**/index.{ts}"]
 };
