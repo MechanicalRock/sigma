@@ -1,3 +1,4 @@
 # Sigma
 
-Collection of node packages
+
+A collection (e.g. 'sum of' or 'sigma') of aws-centric node packages
