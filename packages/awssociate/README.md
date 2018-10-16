@@ -1,6 +1,6 @@
 # `@mechanical-rock/awssociate`
 
-> Some helpers for AWS
+> Helping you build better serverless products 
 
 ## Usage
 
