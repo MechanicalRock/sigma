@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "> Some helpers for AWS",
   "author": "Matt Tyler <matt.tyler@mechanicalrock.io>",
-  "license": "Apache-2.0",
+  "license": "Apache 2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/mechanicalrock/sigma"
