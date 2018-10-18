@@ -1,4 +1,4 @@
-import { Credentials, STS } from "aws-sdk";
+import { Credentials, STS, EnvironmentCredentials } from "aws-sdk";
 
 /*
 Fluent factory system for instantiating AWS services using role-credential
@@ -23,13 +23,14 @@ const myS3svc = new Factory({ credentials: base })
     })
 */
 
+
 export type Ctor<T, U> = new (options: U) => T;
 
 export class Factory implements IForService {
-    constructor(private options: STS.ClientConfiguration) { }
+    constructor(private options?: STS.ClientConfiguration) { }
 
     public ForService<T, U>(service: Ctor<T, U>) {
-        return new ServiceFactory(this.options, service);
+        return new ServiceFactory(service, this.options)
     }
 }
 
@@ -41,8 +42,9 @@ export class ServiceFactory<T, U> implements IWithOptions<T, U>, IWithRoleChain<
     private options?: U = undefined;
 
     constructor(
-        private stsOptions: STS.ClientConfiguration,
-        private service: Ctor<T, U>) { }
+        private service: Ctor<T, U>,
+        private stsOptions?: STS.ClientConfiguration
+        ) {}
 
     public WithOptions(options: U): OmitWithOptions<T, U> {
         if (this.options !== undefined) {
@@ -53,13 +55,14 @@ export class ServiceFactory<T, U> implements IWithOptions<T, U>, IWithRoleChain<
     }
 
     public async WithRoleChain(...roleRequests: STS.AssumeRoleRequest[]): Promise<T> {
-        const stsOptions = { ...this.stsOptions }
+        const stsOptions = this.stsOptions || {}
+
         const credentials = await roleRequests.reduce((acc: Promise<Credentials>, r: STS.AssumeRoleRequest) => {
             return acc.then((cred) => {
                 stsOptions.credentials = cred 
                 return this.Assumer(stsOptions, r);
             });
-        }, Promise.resolve(this.stsOptions.credentials as Credentials));
+        }, Promise.resolve(stsOptions.credentials as Credentials || new EnvironmentCredentials("AWS")));
         const serviceOptions = Object.assign({} as U, this.options || {}, { ...credentials });
         return new this.service(serviceOptions);
     }
