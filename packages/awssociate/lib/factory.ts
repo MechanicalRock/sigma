@@ -56,13 +56,14 @@ export class ServiceFactory<T, U> implements IWithOptions<T, U>, IWithRoleChain<
 
     public async WithRoleChain(...roleRequests: STS.AssumeRoleRequest[]): Promise<T> {
         const stsOptions = this.stsOptions || {}
-
+        // If no credentials have been supplied, then use the default AWS resolution mechanism
+        const initialCredentials = Promise.resolve(stsOptions.credentials as Credentials )
         const credentials = await roleRequests.reduce((acc: Promise<Credentials>, r: STS.AssumeRoleRequest) => {
             return acc.then((cred) => {
                 stsOptions.credentials = cred 
                 return this.Assumer(stsOptions, r);
             });
-        }, Promise.resolve(stsOptions.credentials as Credentials || new EnvironmentCredentials("AWS")));
+        }, initialCredentials); 
         const serviceOptions = Object.assign({} as U, this.options || {}, { ...credentials });
         return new this.service(serviceOptions);
     }
