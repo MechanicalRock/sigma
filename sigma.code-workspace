@@ -6,6 +6,9 @@
 		},
 		{
 			"path": "packages/awssociate"
+		},
+		{
+			"path": "packages/cloudevents"
 		}
 	],
 	"settings": {}

@@ -1,4 +1,1 @@
-import { CloudEvents } from "./cloudEvents";
-
-export { Factory } from "./factory";
-export { CloudEvents } from "./cloudEvents"
+export { Factory as Awssociate } from "./factory";
