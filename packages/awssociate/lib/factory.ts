@@ -1,4 +1,5 @@
 import { Credentials, STS, EnvironmentCredentials } from "aws-sdk";
+import AWSXRay from 'aws-xray-sdk';
 
 /*
 Fluent factory system for instantiating AWS services using role-credential
@@ -65,12 +66,12 @@ export class ServiceFactory<T, U> implements IWithOptions<T, U>, IWithRoleChain<
             });
         }, initialCredentials); 
         const serviceOptions = Object.assign({} as U, this.options || {}, { ...credentials });
-        return new this.service(serviceOptions);
+        return AWSXRay.captureAWSClient(new this.service(serviceOptions));
     }
 
     private async Assumer(options: STS.ClientConfiguration, request: STS.AssumeRoleRequest)
     : Promise<Credentials> {
-        const response = new STS(options).assumeRole(request);
+        const response = AWSXRay.captureAWSClient(new STS(options)).assumeRole(request);
         const token = (await response.promise()).Credentials;
         if (token === undefined) {
             throw new Error("Retrieved credentials were returned undefined");
