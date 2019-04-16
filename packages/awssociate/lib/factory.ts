@@ -1,5 +1,5 @@
 import { Credentials, STS, EnvironmentCredentials } from "aws-sdk";
-import AWSXRay from 'aws-xray-sdk';
+// import AWSXRay from 'aws-xray-sdk';
 
 /*
 Fluent factory system for instantiating AWS services using role-credential
@@ -66,12 +66,12 @@ export class ServiceFactory<T, U> implements IWithOptions<T, U>, IWithRoleChain<
             });
         }, initialCredentials); 
         const serviceOptions = Object.assign({} as U, this.options || {}, { ...credentials });
-        return AWSXRay.captureAWSClient(new this.service(serviceOptions));
+        return decorateWithXRayIfAvailable(new this.service(serviceOptions));
     }
 
     private async Assumer(options: STS.ClientConfiguration, request: STS.AssumeRoleRequest)
     : Promise<Credentials> {
-        const response = AWSXRay.captureAWSClient(new STS(options)).assumeRole(request);
+        const response = decorateWithXRayIfAvailable(new STS(options)).assumeRole(request);
         const token = (await response.promise()).Credentials;
         if (token === undefined) {
             throw new Error("Retrieved credentials were returned undefined");
@@ -82,6 +82,19 @@ export class ServiceFactory<T, U> implements IWithOptions<T, U>, IWithRoleChain<
                 sessionToken: token.SessionToken,
             } as Credentials;
         }
+    }
+}
+
+/**
+ * Adds AWS XRay decoration to the constructed XRay client, if it has been specified as a dependency.
+ */
+function decorateWithXRayIfAvailable<T>(service: T): T{
+    try{
+        const AWSXRay = require('aws-xray-sdk')
+        return AWSXRay.captureAWSClient(service)
+    }catch(err) {
+        // XRay not available
+        return service
     }
 }
 
