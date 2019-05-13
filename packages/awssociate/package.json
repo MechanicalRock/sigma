@@ -25,6 +25,7 @@
     "build": "npm run clean && rollup -c",
     "clean": "rimraf .js/ .dist/ .cover/",
     "compile": "tsc",
+    "release:patch": "npm run build && npm version patch && npm login && npm publish",
     "test": "jest --coverage"
   },
   "devDependencies": {
