@@ -94,6 +94,7 @@ function decorateWithXRayIfAvailable<T>(service: T): T{
         return AWSXRay.captureAWSClient(service)
     }catch(err) {
         // XRay not available
+        console.log('AWS XRay SDK not available.  AWS SDK calls shall not be instrumented.')
         return service
     }
 }
