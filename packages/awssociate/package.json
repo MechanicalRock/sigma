@@ -1,6 +1,6 @@
 {
   "name": "@mechanicalrock/awssociate",
-  "version": "0.3.1",
+  "version": "0.4.1",
   "description": "> Some helpers for AWS",
   "author": "Matt Tyler <matt.tyler@mechanicalrock.io>",
   "license": "Apache-2.0",
