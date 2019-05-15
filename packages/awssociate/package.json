@@ -1,6 +1,6 @@
 {
   "name": "@mechanicalrock/awssociate",
-  "version": "0.4.1",
+  "version": "0.4.3",
   "description": "> Some helpers for AWS",
   "author": "Matt Tyler <matt.tyler@mechanicalrock.io>",
   "license": "Apache-2.0",
@@ -27,7 +27,7 @@
     "compile": "tsc",
     "preversion": "npm run build",
     "release:patch": "npm version patch && npm login && npm publish",
-    "postversion": "git push && git push --tags",
+    "postversion": "git commit -am 'update for release' && git push && git push --tags",
     "test": "jest --coverage",
     "test:security": "snyk test",
     "test:security-monitor": "snyk monitor"
