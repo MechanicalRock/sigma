@@ -28,7 +28,9 @@
     "preversion": "npm run build",
     "release:patch": "npm version patch && npm login && npm publish",
     "postversion": "git push && git push --tags",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "test:security": "snyk test",
+    "test:security-monitor": "snyk monitor"
   },
   "devDependencies": {
     "@types/jest": "^24.0.11",
@@ -44,6 +46,7 @@
     "rollup-plugin-terser": "^3.0.0",
     "rollup-plugin-typescript2": "^0.20.1",
     "rollup-plugin-uglify": "^6.0.0",
+    "snyk": "^1.164.0",
     "ts-jest": "^24.0.2",
     "tslint": "^5.11.0",
     "typescript": "^3.1.3"
